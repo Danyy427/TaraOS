@@ -2,6 +2,7 @@ TaraOSv1/artifacts
 TaraOSv1/*.exe
 TaraOSv1/*.dll
 TaraOSv1/*.json
+TaraOSv1/*.pdb
 TaraOS\ Compile\ Tool/.vs
 TaraOS\ Compile\ Tool/bin
 TaraOS\ Compile\ Tool/obj
