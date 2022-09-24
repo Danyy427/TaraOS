@@ -28,6 +28,9 @@ _start:
     mov bp, [BootloaderStack] ; Set stack 0xFFFF
     mov sp, bp ; The stack starts from 0x0007FFFF = 0x7000 * 0x10 + 0xFFFF
     
+    mov si, WelcomeMessage
+    call printstr
+    
     mov dl, [Drive] ; Drive Number
     mov cl, 0x02 ; Start Sector
     mov ch, 0x00 ; Start Cylinder
@@ -40,8 +43,10 @@ _start:
 Drive: resb 1
 BootloaderStackSegment: dw 0x7000
 BootloaderStack: dw 0xFFFF
+WelcomeMessage: db "Welcome to TaraOS MBR. Loading VBR...", 0
 
 %include "diskread.asm"
+%include "printstr.asm"
 
 times 446 - ($ - $$) db 0x00
 
