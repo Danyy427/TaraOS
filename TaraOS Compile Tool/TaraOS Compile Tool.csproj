@@ -1,15 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+	<RuntimeIdentifiers>win-x64;osx-x64</RuntimeIdentifiers>
+	<TargetFramework>net6.0</TargetFramework>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>TaraOS_Compile_Tool</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
+	<SelfContained>true</SelfContained>
 	<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 	<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
-    <OutputPath>..\..\TaraOSv1</OutputPath>
+    <OutputPath>..\TaraOSv1</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
