@@ -37,16 +37,45 @@ _start:
     mov dh, 0x00 ; Start Head
     mov bx, 0x7c00 ; To 0x7c00
     call readOneSectorLegacy ; Read one sector, aka the VBR
+    jc .legacyError
+    
+    jmp 0x7c00
+
+.legacyError:
+    
+    mov dl, [Drive]
+    call checkBIOSReadExtensions
+    
+    cmp ah, 0x01
+    mov si, ExtensionsNotSupportedMessage
+    je .error
+    
+    mov dl, [Drive]
+    mov cx, 0x01
+    xor ax, ax
+    mov ds, ax
+    mov si, 0x7c00
+    call readOneSectorExtended
+    mov si, LoadErrorMessage
+    jc .error
+    
+    jmp 0x7c00
+    
+.error:
+    
+    call printstr
     
     jmp $
 
-Drive: resb 1
-BootloaderStackSegment: dw 0x7000
-BootloaderStack: dw 0xFFFF
-WelcomeMessage: db "Welcome to TaraOS MBR. Loading VBR...", 0
-
 %include "diskread.asm"
 %include "printstr.asm"
+
+Drive: resb 1
+BootloaderStackSegment: dw 0x7000
+BootloaderStack: dw 0xFF00
+WelcomeMessage: db "Welcome to TaraOS MBR. Loading VBR...", 10, 13, 0
+LoadErrorMessage: db "Error Loading VBR!", 10, 13, 0
+ExtensionsNotSupportedMessage: db "BIOS Extensions Not Supported", 10, 13, 0
 
 times 446 - ($ - $$) db 0x00
 
@@ -99,3 +128,4 @@ partition_table_4:
     dd 0x00000000 ; Number of Sectors
 
 dw 0xaa55 ; Boot Signature
+
