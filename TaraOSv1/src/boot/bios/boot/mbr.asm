@@ -5,7 +5,7 @@
 
 global _move
 
-_move: ; 0x7c00 - 0x7cff
+_move:
     cli
     xor ax, ax ; Reset segments 
 	mov es, ax
@@ -39,6 +39,7 @@ _start:
     call readOneSectorLegacy ; Read one sector, aka the VBR
     jc .legacyError
     
+    mov dl, [Drive]
     jmp 0x7c00
 
 .legacyError:
@@ -59,6 +60,7 @@ _start:
     mov si, LoadErrorMessage
     jc .error
     
+    mov dl, [Drive]
     jmp 0x7c00
     
 .error:
