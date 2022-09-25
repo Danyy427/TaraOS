@@ -32,11 +32,40 @@ namespace TaraOS_Compile_Tool
 
             return proc.StandardOutput.ReadToEnd();
         }
+
+        static void copyTogether()
+        {
+            string query = $"{copyToolUnix} ";
+
+            foreach (var file in copyCatFileOrder)
+            {
+                query += $"\"{Path.Combine(outputArtifacts, file)}\" ";
+            }
+            query += "> " "\"" + Path.Combine(outputBin, endFileName) + "\"";
+
+            Console.WriteLine(query);
+            shellRun(query);
+        }
 #else 
         static void shellRun(string q)
         {
             var process = System.Diagnostics.Process.Start("CMD.exe", $"/C {q}");
             process.WaitForExit();
+        }
+
+
+        static void copyTogether()
+        {
+            string query = $"{copyTool} /b ";
+
+            foreach (var file in copyCatFileOrder)
+            {
+                query += $"\"{Path.Combine(outputArtifacts, file)}\" + ";
+            }
+            query = query.Substring(0, query.Length - 2) + "/b \"" + Path.Combine(outputBin, endFileName) + "\"";
+
+            Console.WriteLine(query);
+            shellRun(query);
         }
 #endif
     }

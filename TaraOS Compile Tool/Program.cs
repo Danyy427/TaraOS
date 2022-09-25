@@ -13,6 +13,7 @@ namespace TaraOS_Compile_Tool
         static string assembler = "nasm";
         static string linker = "ld";
         static string copyTool = "copy";
+        static string copyToolUnix = "cat";
         static string emulator = "qemu-system-x86_64";
 
         static string assemblerFlagsBin = "-fbin";
@@ -38,7 +39,6 @@ namespace TaraOS_Compile_Tool
             Console.ReadLine();
 
         }
-
 
         static void clear()
         {
@@ -67,19 +67,6 @@ namespace TaraOS_Compile_Tool
             }
         }
 
-        static void copyTogether()
-        {
-            string query = $"{copyTool} /b ";
-
-            foreach (var file in copyCatFileOrder)
-            {
-                query += $"\"{Path.Combine(outputArtifacts, file)}\" + ";
-            }
-            query = query.Substring(0, query.Length - 2) + "/b \"" + Path.Combine(outputBin, endFileName) + "\"";
-
-            Console.WriteLine(query);
-            shellRun(query);
-        }
 
         static void run()
         {
