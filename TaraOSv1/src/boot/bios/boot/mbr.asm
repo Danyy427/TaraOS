@@ -30,6 +30,10 @@ _start:
     
     mov si, WelcomeMessage
     call printstr
+
+    ; WHERE IS THE OUTPUT
+    mov dx, 0xffff
+    call printhex
     
     mov dl, [Drive] ; Drive Number
     mov cl, 0x02 ; Start Sector
@@ -37,7 +41,7 @@ _start:
     mov dh, 0x00 ; Start Head
     mov bx, 0x7c00 ; To 0x7c00
     call readOneSectorLegacy ; Read one sector, aka the VBR
-    
+
     jmp $
 
 Drive: resb 1
@@ -47,6 +51,7 @@ WelcomeMessage: db "Welcome to TaraOS MBR. Loading VBR...", 0
 
 %include "diskread.asm"
 %include "printstr.asm"
+%include "printhex.asm"
 
 times 446 - ($ - $$) db 0x00
 

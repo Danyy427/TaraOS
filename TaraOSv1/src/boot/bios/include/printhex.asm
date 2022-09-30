@@ -3,7 +3,7 @@
 ; Print Hex Number
 ; input: dx
 
-hexsetup:
+printhex:
     push cx
     push bx
     xor cx, cx
@@ -18,12 +18,12 @@ hexreverse:
     mov cx, ax
     shr dx, cl
     pop cx
-    
+
     and dx, 0x000F
 
     mov bx, hexNums
     add bx, dx
-    mov al, [bx]
+    mov al, byte [bx]
     mov ah, 0x0e
     int 0x10
 
