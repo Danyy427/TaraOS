@@ -12,7 +12,7 @@ namespace TaraOS_Compile_Tool
 
         static void shellRun(string q)
         {
-            if(Environment.OSVersion.Platform == PlatformID.MacOSX)
+            if(Environment.OSVersion.Platform == PlatformID.Unix)
             {
                 // according to: https://stackoverflow.com/a/15262019/637142
                 // thans to this we will pass everything as one command
@@ -22,7 +22,7 @@ namespace TaraOS_Compile_Tool
                 {
                     StartInfo = new ProcessStartInfo
                     {
-                        FileName = "/bin/bash",
+                        FileName = "/bin/zsh",
                         Arguments = "-c \"" + q + "\"",
                         UseShellExecute = false,
                         RedirectStandardOutput = true,
@@ -51,7 +51,7 @@ namespace TaraOS_Compile_Tool
         static void copyTogether()
         {
 
-            if (Environment.OSVersion.Platform == PlatformID.MacOSX)
+            if (Environment.OSVersion.Platform == PlatformID.Unix)
             {
                 string query = $"{copyToolUnix} ";
 

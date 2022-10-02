@@ -8,7 +8,7 @@ namespace TaraOS_Compile_Tool
     public partial class TaraOSCTool
     {
         static string endFileName = "TaraOS.img";
-        static string currentDir = "."; // Directory.GetCurrentDirectory();
+        static string currentDir = AppDomain.CurrentDomain.BaseDirectory;//"."; // Directory.GetCurrentDirectory();
 
         static string compiler = "gcc";
         static string assembler = "nasm";
