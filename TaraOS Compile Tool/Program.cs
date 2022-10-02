@@ -8,6 +8,7 @@ namespace TaraOS_Compile_Tool
     public partial class TaraOSCTool
     {
         static string endFileName = "TaraOS.img";
+        static string currentDir = Directory.GetCurrentDirectory();
 
         static string compiler = "gcc";
         static string assembler = "nasm";
@@ -22,8 +23,8 @@ namespace TaraOS_Compile_Tool
         static string outputBin = "bin";
         static string outputArtifacts = "artifacts";
 
-        static string[] assemblyBinFolders = { Path.Combine(sourceFolder, "boot", "bios", "include")};
-        static string assemblyIncFolder = Path.Combine(sourceFolder, "boot", "bios", "include");
+        static string[] assemblyBinFolders = { Path.Combine(currentDir, sourceFolder, "boot", "bios", "include")};
+        static string assemblyIncFolder = Path.Combine(currentDir, sourceFolder, "boot", "bios", "include");
         static string[] copyCatFileOrder = { "mbr.bin", "vbr.bin", "boot.bin" };
 
         public static void Main(string[] args)
@@ -62,7 +63,7 @@ namespace TaraOS_Compile_Tool
 
                 foreach (var assemblyFile in assemblyFiles)
                 {
-                    shellRun($"{assembler} {assemblerFlagsBin} {assemblyFile} -i {assemblyIncFolder} -o {Path.Combine(outputArtifacts, Path.GetFileNameWithoutExtension(assemblyFile.FullName) + ".bin")}");
+                    shellRun($"{assembler} {assemblerFlagsBin} {assemblyFile} -i {assemblyIncFolder} -o {Path.Combine(currentDir, outputArtifacts, Path.GetFileNameWithoutExtension(assemblyFile.FullName) + ".bin")}");
                 }
             }
         }
@@ -70,7 +71,7 @@ namespace TaraOS_Compile_Tool
 
         static void run()
         {
-            shellRun(emulator + $" -monitor stdio {Path.Combine(outputBin, endFileName)}");
+            shellRun(emulator + $" -monitor stdio {Path.Combine(currentDir, outputBin, endFileName)}");
         }
     }
 }

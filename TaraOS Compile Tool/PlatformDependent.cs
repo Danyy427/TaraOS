@@ -57,9 +57,9 @@ namespace TaraOS_Compile_Tool
 
                 foreach (var file in copyCatFileOrder)
                 {
-                    query += $"\"{Path.Combine(outputArtifacts, file)}\" ";
+                    query += $"\"{Path.Combine(currentDir, outputArtifacts, file)}\" ";
                 }
-                query += "> " + "\"" + Path.Combine(outputBin, endFileName) + "\"";
+                query += "> " + "\"" + Path.Combine(currentDir, outputBin, endFileName) + "\"";
 
                 Console.WriteLine(query);
                 shellRun(query);

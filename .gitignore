@@ -8,12 +8,13 @@ TaraOSv1/TaraOS\ Compile\ Tool
 TaraOS\ Compile\ Tool/.vs
 TaraOS\ Compile\ Tool/bin
 TaraOS\ Compile\ Tool/obj
+TaraOS\ Compile\ Tool/*.sln
 
 TaraOSv1/TaraOS Compile Tool
 TaraOS Compile Tool/TaraOS Compile Tool/obj/
 TaraOS Compile Tool/TaraOS Compile Tool/bin/
 TaraOS Compile Tool/TaraOS Compile Tool/.vs/
+TaraOS Compile Tool/*.sln
 
 .DS_Store
 .vscode
-
