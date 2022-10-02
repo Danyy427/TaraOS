@@ -8,7 +8,7 @@ printhex:
     push bx
     xor cx, cx
 
-hexreverse:
+hexreverse: 
     push ax
 
     mov ax, 4
@@ -26,13 +26,13 @@ hexreverse:
     mov al, byte [bx]
     mov ah, 0x0e
     int 0x10
-
+    
     pop ax
 
     inc cx
 
     cmp cx, 4 
-    je endreverse
+    je $;endreverse
     jmp hexreverse
 
 endreverse:
