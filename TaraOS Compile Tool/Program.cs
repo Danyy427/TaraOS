@@ -18,9 +18,9 @@ namespace TaraOS_Compile_Tool
 
         static string assemblerFlagsBin = "-fbin";
 
-        static string sourceFolder = ".\\src";
-        static string outputBin = ".\\bin";
-        static string outputArtifacts = ".\\artifacts";
+        static string sourceFolder = "src";
+        static string outputBin = "bin";
+        static string outputArtifacts = "artifacts";
 
         static string[] assemblyBinFolders = { Path.Combine(sourceFolder, "boot\\bios\\boot") };
         static string assemblyIncFolder = Path.Combine(sourceFolder, "boot\\bios\\include");
