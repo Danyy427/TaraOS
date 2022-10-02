@@ -6,7 +6,16 @@ global _boot64
 
 _boot:
 
+    mov dx, 0xdead
+    call printhex
+
     jmp $
+
+
+
+%include "diskread.asm"
+%include "printstr.asm"
+%include "printhex.asm"
 
 [BITS 64]
 
