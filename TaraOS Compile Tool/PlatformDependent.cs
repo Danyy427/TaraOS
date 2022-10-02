@@ -70,9 +70,9 @@ namespace TaraOS_Compile_Tool
 
                 foreach (var file in copyCatFileOrder)
                 {
-                    query += $"\"{Path.Combine(outputArtifacts, file)}\" + ";
+                    query += $"\"{Path.Combine(currentDir, outputArtifacts, file)}\" + ";
                 }
-                query = query.Substring(0, query.Length - 2) + "/b \"" + Path.Combine(outputBin, endFileName) + "\"";
+                query = query.Substring(0, query.Length - 2) + "/b \"" + Path.Combine(currentDir, outputBin, endFileName) + "\"";
 
                 Console.WriteLine(query);
                 shellRun(query);

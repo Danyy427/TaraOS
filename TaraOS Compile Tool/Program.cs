@@ -8,7 +8,7 @@ namespace TaraOS_Compile_Tool
     public partial class TaraOSCTool
     {
         static string endFileName = "TaraOS.img";
-        static string currentDir = Directory.GetCurrentDirectory();
+        static string currentDir = "."; // Directory.GetCurrentDirectory();
 
         static string compiler = "gcc";
         static string assembler = "nasm";
@@ -23,7 +23,7 @@ namespace TaraOS_Compile_Tool
         static string outputBin = "bin";
         static string outputArtifacts = "artifacts";
 
-        static string[] assemblyBinFolders = { Path.Combine(currentDir, sourceFolder, "boot", "bios", "include")};
+        static string[] assemblyBinFolders = { Path.Combine(currentDir, sourceFolder, "boot", "bios", "boot")};
         static string assemblyIncFolder = Path.Combine(currentDir, sourceFolder, "boot", "bios", "include");
         static string[] copyCatFileOrder = { "mbr.bin", "vbr.bin", "boot.bin" };
 
