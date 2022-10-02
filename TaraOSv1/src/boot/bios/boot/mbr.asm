@@ -5,7 +5,7 @@
 
 global _move
 
-_move: ; 0x7c00 - 0x7cff
+_move:
     cli
     xor ax, ax ; Reset segments 
 	mov es, ax
@@ -25,8 +25,8 @@ _start:
     mov [Drive], dl ; Save drive number given to us by BIOS
     
     mov ss, [BootloaderStackSegment] ; Set stack segment 0x7000
-    mov bp, [BootloaderStack] ; Set stack 0xFFFF
-    mov sp, bp ; The stack starts from 0x0007FFFF = 0x7000 * 0x10 + 0xFFFF
+    mov bp, [BootloaderStack] ; Set stack 0xFF00
+    mov sp, bp ; The stack starts from 0x0007FF00 = 0x7000 * 0x10 + 0xFF00
     
     mov si, WelcomeMessage
     call printstr
@@ -42,16 +42,48 @@ _start:
     mov bx, 0x7c00 ; To 0x7c00
     call readOneSectorLegacy ; Read one sector, aka the VBR
 
-    jmp $
+    jc .legacyError
+    
+    mov dl, [Drive]
+    jmp 0x0000:0x7c00
 
-Drive: resb 1
-BootloaderStackSegment: dw 0x7000
-BootloaderStack: dw 0xFFFF
-WelcomeMessage: db "Welcome to TaraOS MBR. Loading VBR...", 0
+.legacyError:
+    
+    mov dl, [Drive]
+    call checkBIOSReadExtensions
+    
+    cmp ah, 0x01
+    mov si, ExtensionsNotSupportedMessage
+    je .error
+    
+    mov dl, [Drive]
+    mov cx, 0x01
+    xor ax, ax
+    mov ds, ax
+    mov si, 0x7c00
+    call readOneSectorExtended
+    mov si, LoadErrorMessage
+    jc .error
+    
+    mov dl, [Drive]
+    jmp 0x0000:0x7c00
+    
+.error:
+    
+    call printstr
+    
+    jmp $
 
 %include "diskread.asm"
 %include "printstr.asm"
 %include "printhex.asm"
+
+Drive: resb 1
+BootloaderStackSegment: dw 0x7000
+BootloaderStack: dw 0xFF00
+WelcomeMessage: db "Welcome to TaraOS MBR. Loading VBR...", 10, 13, 0
+LoadErrorMessage: db "Error Loading VBR!", 10, 13, 0
+ExtensionsNotSupportedMessage: db "BIOS Extensions Not Supported", 10, 13, 0
 
 times 446 - ($ - $$) db 0x00
 
@@ -104,3 +136,4 @@ partition_table_4:
     dd 0x00000000 ; Number of Sectors
 
 dw 0xaa55 ; Boot Signature
+

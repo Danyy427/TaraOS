@@ -59,6 +59,25 @@ readOneSectorLegacy:
     ret
 
 ;
+; Reads n sector using non-extended BIOS functions
+; Params: dl: drive number
+;         cl: sector number 0-5, cylinder 6-7
+;         ch: cylinder number
+;         dh: head number
+;         al: sector amount to read
+;         es:bx: data buffer
+; Output: ah = 0x11 on error
+;         ah = 0x00 on sucess
+;         al = 0x01 on success
+;
+
+readNSectorLegacy:
+    mov ah, 0x02
+    int 0x13
+    
+    ret
+
+;
 ; Check if extended BIOS disk functions exist
 ; Params: dl: drive number
 ; Output: ah = 0x01 on extensions not supported
@@ -71,7 +90,7 @@ checkBIOSReadExtensions:
     int 0x13 ; Check if extensions exist
 
     mov ah, 0x01 ; ah = 0x01 if they do not
-    jnc checkEnd ; Nope they don't exist
+    jc checkEnd ; Nope they don't exist
 
     cmp bx, 0xaa55 ; Check if they really exist
     jne checkEnd ; Nope
@@ -83,35 +102,67 @@ checkEnd:
 
 ;
 ; Read one sector from disk
-; Params: dl: drive numver
-;         cx: start LBA
+; Params: dl: drive number
+;         ecx: start LBA
 ;         ds:si: buffer
 ; Output: Carry set on error
 ;         ah: error code
 ;
 
 readOneSectorExtended:
-    push ax
 
-    mov word [b], cx ; Starting block
+    mov dword [b], ecx ; Starting block ; Do Illegal stuff
     mov word [o], si ; Buffer offset
     mov word [s], ds ; Buffer segment
     
-    mov ax, 0
+    xor ax, ax
     mov ds, ax
     mov si, DAPACK ; address of data pack
     mov ah, 0x42
     int 0x13 ; Read sectors
 
-    pop ax
     ret
 
 DAPACK:
     db 0x10 ; packet size
     db 0x00 ; reserved 
     dw 0x01 ; transfer size in sectors
-o:  dw 0x00 ; transfer buffer offset
-s:  dw 0x00 ; segment // AS UNSAFE AS IT GETS CHANGE LATER
-    dd 0x00 ; starting block
-    dw 0x00 ;
-b:  dw 0x00 ;
+o:  dw 0x0000 ; transfer buffer offset
+s:  dw 0x0000 ; segment
+b:  dd 0x00 ; starting block
+    dd 0x00
+    
+    
+;
+; Read one sector from disk
+; Params: dl: drive number
+;         bx: sector amount to read
+;         ecx: start LBA
+;         ds:si: buffer
+; Output: Carry set on error
+;         ah: error code
+;
+
+readNSectorExtended:
+
+    mov dword [b1], ecx ; Starting block ; Do Illegal stuff
+    mov word [o1], si ; Buffer offset
+    mov word [s1], ds ; Buffer segment
+    mov word [i1], bx ; Amount of Sectors to read
+    
+    xor ax, ax
+    mov ds, ax
+    mov si, DAPACK1 ; address of data pack
+    mov ah, 0x42
+    int 0x13 ; Read sectors
+
+    ret
+
+DAPACK1:
+    db 0x10 ; packet size
+    db 0x00 ; reserved 
+i1: dw 0x00 ; transfer size in sectors
+o1: dw 0x0000 ; transfer buffer offset
+s1: dw 0x0000 ; segment
+b1: dd 0x00 ; starting block
+    dd 0x00

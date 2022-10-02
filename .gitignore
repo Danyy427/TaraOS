@@ -2,8 +2,9 @@ TaraOSv1/artifacts
 TaraOSv1/*.exe
 TaraOSv1/*.dll
 TaraOSv1/*.json
-TaraOS Compile\ Tool/.vs
-TaraOS Compile\ Tool/TaraOS\ Compile Tool/bin
-TaraOS Compile\ Tool/TaraOS\ Compile Tool/obj
+TaraOSv1/*.pdb
+TaraOS\ Compile\ Tool/.vs
+TaraOS\ Compile\ Tool/bin
+TaraOS\ Compile\ Tool/obj
 .DS_Store
 .vscode
