@@ -7,6 +7,15 @@ printhex:
     push cx
     push bx
     push ax
+
+    mov al, 0x30 ; print 0
+    mov ah, 0x0e
+    int 0x10
+
+    mov al, 0x78
+    mov ah, 0x0e
+    int 0x10
+
     mov cx, 4
 
 printhexloop:
