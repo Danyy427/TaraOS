@@ -43,11 +43,11 @@ namespace TaraOS_Compile_Tool
 
         static void clear()
         {
-            foreach (var file in new DirectoryInfo(outputArtifacts).GetFiles())
+            foreach (var file in new DirectoryInfo(Path.Combine(currentDir, outputArtifacts)).GetFiles())
             {
                 file.Delete();
             }
-            foreach (var file in new DirectoryInfo(outputBin).GetFiles())
+            foreach (var file in new DirectoryInfo(Path.Combine(currentDir, outputBin)).GetFiles())
             {
                 file.Delete();
             }
