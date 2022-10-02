@@ -8,3 +8,5 @@ TaraOS\ Compile\ Tool/bin
 TaraOS\ Compile\ Tool/obj
 .DS_Store
 .vscode
+TaraOS Compile Tool/TaraOS Compile Tool/obj/
+.vs
