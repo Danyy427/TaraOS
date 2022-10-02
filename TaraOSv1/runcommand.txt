@@ -1,0 +1,11 @@
+Run:
+qemu-system-x86_64 TaraOS.img
+
+Test mbr:
+nasm -fbin mbr.asm -i ../include/ -o Tara.img
+
+check funny memory stuff:
+qemu-system-x86_64 -monitor stdio Tara.img
+
+display registers in the funny mode:
+info registers

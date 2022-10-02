@@ -30,6 +30,10 @@ _start:
     
     mov si, WelcomeMessage
     call printstr
+
+    ; WHERE IS THE OUTPUT
+    mov dx, 0xdead
+    call printhex
     
     mov dl, [Drive] ; Drive Number
     mov cl, 0x02 ; Start Sector
@@ -37,6 +41,7 @@ _start:
     mov dh, 0x00 ; Start Head
     mov bx, 0x7c00 ; To 0x7c00
     call readOneSectorLegacy ; Read one sector, aka the VBR
+
     jc .legacyError
     
     mov dl, [Drive]
@@ -71,6 +76,7 @@ _start:
 
 %include "diskread.asm"
 %include "printstr.asm"
+%include "printhex.asm"
 
 Drive: resb 1
 BootloaderStackSegment: dw 0x7000
