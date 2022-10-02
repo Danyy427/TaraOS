@@ -22,8 +22,8 @@ namespace TaraOS_Compile_Tool
         static string outputBin = "bin";
         static string outputArtifacts = "artifacts";
 
-        static string[] assemblyBinFolders = { Path.Combine(sourceFolder, "boot\\bios\\boot") };
-        static string assemblyIncFolder = Path.Combine(sourceFolder, "boot\\bios\\include");
+        static string[] assemblyBinFolders = { Path.Combine(sourceFolder, "boot", "bios", "include")};
+        static string assemblyIncFolder = Path.Combine(sourceFolder, "boot", "bios", "include");
         static string[] copyCatFileOrder = { "mbr.bin", "vbr.bin", "boot.bin" };
 
         public static void Main(string[] args)
