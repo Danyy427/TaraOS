@@ -6,36 +6,39 @@
 printhex:
     push cx
     push bx
-    xor cx, cx
-
-hexreverse: 
     push ax
+    mov cx, 4
 
-    mov ax, 4
-    mul cx
+printhexloop:
+
+    dec cx
 
     push cx
-    mov cx, ax
+    push dx
+    mov ax, 4
+    mul cx
+    mov cx, ax ; cx -> number to shift right by
+    pop dx
+
+    push dx
     shr dx, cl
-    pop cx
 
-    and dx, 0x000F
-
+    and dx , 0x000F
     mov bx, hexNums
     add bx, dx
-    mov al, byte [bx]
+    mov al, byte[bx]
     mov ah, 0x0e
     int 0x10
-    
+
+    pop dx
+
+    pop cx
+    cmp cx, 0
+    je endhex
+    jmp printhexloop
+
+endhex:
     pop ax
-
-    inc cx
-
-    cmp cx, 4 
-    je $;endreverse
-    jmp hexreverse
-
-endreverse:
     pop bx
     pop cx
     ret

@@ -32,7 +32,7 @@ _start:
     call printstr
 
     ; WHERE IS THE OUTPUT
-    mov dx, 0xbeef
+    mov dx, 0xdead
     call printhex
     
     mov dl, [Drive] ; Drive Number
