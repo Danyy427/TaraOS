@@ -85,6 +85,38 @@ enablea20:
     je endenablea20
 
     ; Keyboard interrupt
+    call    a20wait
+    mov     al,0xAD
+    out     0x64,al
+
+    call    a20wait
+    mov     al,0xD0
+    out     0x64,al
+
+    call    a20wait2
+    in      al,0x60
+    push    eax
+
+    call    a20wait
+    mov     al,0xD1
+    out     0x64,al
+
+    call    a20wait
+    pop     eax
+    or      al,2
+    out     0x60,al
+
+    call    a20wait
+    mov     al,0xAE
+    out     0x64,al
+
+    call    a20wait
+    sti
+    ret
+    ; Check if it worked (It will probably crash if it doesn't but anyway)
+    call checka20
+    cmp ax, 1
+    je endenablea20
 
     ; Fast A20
     in al, 0x92
@@ -101,8 +133,25 @@ enablea20:
     call printstr
     pop si
 
+    ; magik trick
+    hlt
+    jmp $-1
+
 endenablea20:
     pop ax
+    ret
+
+a20wait:
+    in      al,0x64
+    test    al,2
+    jnz     a20wait
+    ret
+ 
+ 
+a20wait2:
+    in      al,0x64
+    test    al,1
+    jz      a20wait2
     ret
 
 a20errmsg: db "I gave up (A20 line enabling error)", 0
