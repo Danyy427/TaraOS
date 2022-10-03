@@ -11,6 +11,7 @@ checka20:
     push ds
     push di
     push si
+
     cli
 
     ; Set segments
@@ -40,10 +41,10 @@ checka20:
 
     ; Retrieve old values of the adresses
     pop ax
-    mov byte [ds:si], al
+    mov byte[ds:si], al
  
     pop ax
-    mov byte [es:di], al
+    mov byte[es:di], al
 
     ; Return logic
     xor ax, ax
@@ -63,3 +64,26 @@ endchecka20:
 
 ; Enables the A20 line
 enablea20:
+    ; Secure ax as it will be modified during the check
+    push ax
+
+    ; Check if the A20 line is already enabled
+    call checka20
+    cmp ax, 1
+    je endenablea20
+
+    ; Else, enable the A20 line
+
+    ; Some systems have a BIOS function for this
+    mov ax, 0x2401
+    int 0x15
+    ; Check if it worked
+    call checka20
+    cmp ax, 1
+    je endenablea20
+
+    ; If the interrupt doesn't work
+
+endenablea20:
+    pop ax
+    ret
