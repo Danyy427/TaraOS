@@ -2,6 +2,8 @@
 
 ; PARAM: si -> source
 printstr:
+    push ax
+    push si
     mov ah, 0x0e
 
 printstrloop:
@@ -14,4 +16,7 @@ printstrloop:
     jmp printstrloop
 
 endprintstr:
+    pop si
+    pop ax
+
     ret
