@@ -1,5 +1,7 @@
 [BITS 16]
 
+%include "printstr.asm"
+
 ; Checks if the A20 line is already enabled
 ; compares 0000:0500 to ffff:0510
 ; if they're different, the A20 line is already enabled
@@ -103,4 +105,4 @@ endenablea20:
     pop ax
     ret
 
-a20errmsg: db "I gave up (A20 Enabling Error)", 0
+a20errmsg: db "I gave up (A20 line enabling error)", 0
