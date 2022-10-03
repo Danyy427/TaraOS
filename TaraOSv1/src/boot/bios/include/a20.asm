@@ -82,8 +82,25 @@ enablea20:
     cmp ax, 1
     je endenablea20
 
-    ; If the interrupt doesn't work
+    ; Keyboard interrupt
+
+    ; Fast A20
+    in al, 0x92
+    or al, 2
+    out 0x92, al
+    ; Check if it worked (It will probably crash if it doesn't but anyway)
+    call checka20
+    cmp ax, 1
+    je endenablea20
+
+    ; Give up (print an error message)
+    push si
+    mov si, a20errmsg
+    call printstr
+    pop si
 
 endenablea20:
     pop ax
     ret
+
+a20errmsg: db "I gave up (A20 Enabling Error)", 0
