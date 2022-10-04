@@ -5,17 +5,31 @@ global _boot
 global _boot64
 
 _boot:
-
-    mov dx, 0xdead
-    call printhex
-
+    
+    call enablea20
+    cmp ah, 0
+    jne a20error
+    
+    mov si, a20success
+    call printstr
+    
     jmp $
 
-
+a20error:
+    mov si, a20errmsg
+    call printstr
+    
+    hlt
+    jmp $
 
 %include "diskread.asm"
 %include "printstr.asm"
 %include "printhex.asm"
+%include "a20.asm"
+
+a20errmsg: db "I gave up (A20 line enabling error)", 13, 10, 0
+a20success: db "A20 Enabled", 13, 10, 0
+
 
 [BITS 64]
 

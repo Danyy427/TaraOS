@@ -34,10 +34,10 @@ checka20:
     push ax
 
     ; Move different values to the two adresses
-    mov byte[es, di], 0x0000
-    mov byte[ds, si], 0xffff
+    mov word[es:di], 0x0000
+    mov word[ds:si], 0xffff
 
-    cmp byte[es, di], 0xffff
+    cmp word[es:di], 0xffff
 
     ; Retrieve old values of the adresses
     pop ax
@@ -120,11 +120,11 @@ enablea20:
     ; Check if it worked (It will probably crash if it doesn't but anyway)
     call checka20
     cmp ax, 1
+    xor ax, ax ; 0 for success
     je endenablea20
 
     ; Give up (print an error message)
-    xor ax, ax
-    mov ah, a20errmsg
+    mov ah, 1 ; 1 for error
     jmp endenablea20
 
 syssuspend:
@@ -147,4 +147,3 @@ a20wait2:
     jz      a20wait2
     ret
 
-a20errmsg: db "I gave up (A20 line enabling error)", 0x0a, 0
