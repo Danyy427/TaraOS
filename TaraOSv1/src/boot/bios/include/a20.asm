@@ -1,7 +1,5 @@
 [BITS 16]
 
-%include "printstr.asm"
-
 ; Checks if the A20 line is already enabled
 ; compares 0000:0500 to ffff:0510
 ; if they're different, the A20 line is already enabled
@@ -66,9 +64,6 @@ endchecka20:
 
 ; Enables the A20 line
 enablea20:
-    ; Secure ax as it will be modified during the check
-    push ax
-
     ; Check if the A20 line is already enabled
     call checka20
     cmp ax, 1
@@ -128,17 +123,15 @@ enablea20:
     je endenablea20
 
     ; Give up (print an error message)
-    push si
-    mov si, a20errmsg
-    call printstr
-    pop si
+    xor ax, ax
+    mov ah, a20errmsg
+    jmp endenablea20
 
-    ; magik trick
+syssuspend:
     hlt
-    jmp $-1
+    jmp syssuspend
 
 endenablea20:
-    pop ax
     ret
 
 a20wait:
@@ -154,4 +147,4 @@ a20wait2:
     jz      a20wait2
     ret
 
-a20errmsg: db "I gave up (A20 line enabling error)", 0
+a20errmsg: db "I gave up (A20 line enabling error)", 0x0a, 0
