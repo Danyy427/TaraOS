@@ -27,7 +27,7 @@ a20error:
 %include "printhex.asm"
 %include "a20.asm"
 
-a20errmsg: db "I gave up (A20 line enabling error)", 13, 10, 0
+a20errmsg: db "I gave up (A20)", 13, 10, 0
 a20success: db "A20 Enabled", 13, 10, 0
 
 
