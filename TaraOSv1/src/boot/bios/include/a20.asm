@@ -5,61 +5,52 @@
 ; if they're different, the A20 line is already enabled
 ; Returns ax: 1 -> enabled, 0 -> disabled
 checka20:
-    ; Secure the registers' values
     pushf
-    push es
     push ds
+    push es
     push di
     push si
-
+ 
     cli
-
-    ; Set segments
-    ; Set es to 0x0000
-    xor ax, ax
+ 
+    xor ax, ax ; ax = 0
     mov es, ax
-
-    ; Set ds to 0xffff
-    not ax
+ 
+    not ax ; ax = 0xFFFF
     mov ds, ax
-
+ 
     mov di, 0x0500
     mov si, 0x0510
-
-    ; Preserve old values of the adresses
+ 
     mov al, byte [es:di]
     push ax
-
+ 
     mov al, byte [ds:si]
     push ax
-
-    ; Move different values to the two adresses
-    mov word[es:di], 0x0000
-    mov word[ds:si], 0xffff
-
-    cmp word[es:di], 0xffff
-
-    ; Retrieve old values of the adresses
-    pop ax
-    mov byte[ds:si], al
+ 
+    mov byte [es:di], 0x00
+    mov byte [ds:si], 0xFF
+ 
+    cmp byte [es:di], 0xFF
  
     pop ax
-    mov byte[es:di], al
-
-    ; Return logic
-    xor ax, ax
-    je endchecka20
-
+    mov byte [ds:si], al
+ 
+    pop ax
+    mov byte [es:di], al
+ 
+    mov ax, 0
+    je check_a20__exit
+ 
     mov ax, 1
-
-endchecka20:
-    ; Retrieve the old register values
+ 
+check_a20__exit:
     pop si
     pop di
-    pop ds
     pop es
+    pop ds
     popf
-
+ 
     ret
 
 ; Enables the A20 line
@@ -68,18 +59,22 @@ enablea20:
     call checka20
     cmp ax, 1
     je endenablea20
-
+    
     ; Else, enable the A20 line
 
     ; Some systems have a BIOS function for this
     mov ax, 0x2401
     int 0x15
+    
     ; Check if it worked
-    call checka20
+    call checka20  
     cmp ax, 1
     je endenablea20
 
+    
+
     ; Keyboard interrupt
+    cli
     call    a20wait
     mov     al,0xAD
     out     0x64,al
@@ -107,9 +102,9 @@ enablea20:
 
     call    a20wait
     sti
-    ret
+    
     ; Check if it worked (It will probably crash if it doesn't but anyway)
-    call checka20
+    call checka20  
     cmp ax, 1
     je endenablea20
 
@@ -118,20 +113,16 @@ enablea20:
     or al, 2
     out 0x92, al
     ; Check if it worked (It will probably crash if it doesn't but anyway)
-    call checka20
+    call checka20  
     cmp ax, 1
-    xor ax, ax ; 0 for success
     je endenablea20
 
     ; Give up (print an error message)
-    mov ah, 1 ; 1 for error
-    jmp endenablea20
+    mov ax, 1 ; 1 for error
+    ret
 
-syssuspend:
-    hlt
-    jmp syssuspend
-
-endenablea20:
+endenablea20: 
+    mov ax, 0 ; 0 for success
     ret
 
 a20wait:
@@ -139,8 +130,7 @@ a20wait:
     test    al,2
     jnz     a20wait
     ret
- 
- 
+
 a20wait2:
     in      al,0x64
     test    al,1

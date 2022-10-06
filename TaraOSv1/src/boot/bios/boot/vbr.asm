@@ -15,7 +15,7 @@ _vbr:
     mov dh, 0x00 ; Start Head
     mov bx, 0x7e00 ; To 0x7e00
     mov al, 0x08
-    call readOneSectorLegacy ; Read eight sectors, the second stage bootloader
+    call readNSectorLegacy ; Read eight sectors, the second stage bootloader
     jc .legacyError
 
     mov dl, [Drive]
@@ -39,7 +39,7 @@ _vbr:
     mov ds, ax
     mov si, 0x7e00
     mov bx, 0x08
-    call readOneSectorExtended
+    call readNSectorExtended
     mov si, LoadErrorMessage
     jc .error
     

@@ -24,9 +24,9 @@ _start:
     sti
     mov [Drive], dl ; Save drive number given to us by BIOS
     
-    mov ss, [BootloaderStackSegment] ; Set stack segment 0x7000
-    mov bp, [BootloaderStack] ; Set stack 0xFF00
-    mov sp, bp ; The stack starts from 0x0007FF00 = 0x7000 * 0x10 + 0xFF00
+    mov ss, [BootloaderStackSegment] ; Set stack segment 0x0000
+    mov bp, [BootloaderStack] ; Set stack 0x7c00
+    mov sp, bp ; The stack starts from 0x7c00 = 0x0 * 0x10 + 0x7c00
     
     mov si, WelcomeMessage
     call printstr
@@ -74,8 +74,8 @@ _start:
 %include "printstr.asm"
 
 Drive: resb 1
-BootloaderStackSegment: dw 0x7000
-BootloaderStack: dw 0xFF00
+BootloaderStackSegment: dw 0x0000
+BootloaderStack: dw 0x7c00
 WelcomeMessage: db "Welcome to TaraOS MBR. Loading VBR...", 10, 13, 0
 LoadErrorMessage: db "Error Loading VBR!", 10, 13, 0
 ExtensionsNotSupportedMessage: db "BIOS Extensions Not Supported", 10, 13, 0
