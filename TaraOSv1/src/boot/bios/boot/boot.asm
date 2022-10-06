@@ -14,6 +14,7 @@ _boot:
     
     mov ax, 0x1000
     mov es, ax
+    mov di, 0x0000
     call do_e820
     jc e820error
     
