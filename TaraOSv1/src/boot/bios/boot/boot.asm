@@ -18,7 +18,7 @@ _boot:
     call do_e820
     jc e820error
     
-    mov si, memorymapsuccessmsg
+    mov si, memoryMapSuccesMmsg
     call printstr
     
     jmp $
@@ -30,15 +30,15 @@ a20error:
     jmp $
     
 e820error:
-    mov si, memorymapfailmsg
+    mov si, memoryMapFailMsg
     call printstr
 
     jmp $
 
 a20errmsg: db "I gave up (A20)", 13, 10, 0
 a20success: db "A20 Enabled", 13, 10, 0
-memorymapsuccessmsg: db "Memory Map Received", 13, 10, 0
-memorymapfailmsg: db "Memory Map Error", 13, 10, 0
+memoryMapSuccesMmsg: db "Memory Map Received", 13, 10, 0
+memoryMapFailMsg: db "Memory Map Error", 13, 10, 0
 
 %include "diskread.asm"
 %include "printstr.asm"
