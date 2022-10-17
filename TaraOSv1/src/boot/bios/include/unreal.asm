@@ -1,4 +1,4 @@
-start:   
+goUnreal:   
     cli                    ; no interrupts
     push ds                ; save real mode
     
@@ -28,5 +28,3 @@ gdtinfo:
 gdt: dd 0,0        ; entry 0 is always unused
 flatdesc: db 0xff, 0xff, 0, 0, 0, 10010010b, 11001111b, 0
 gdt_end:
-    times 510-($-$$) db 0  ; fill sector w/ 0's
-    dw 0xAA55              ; Required by some BIOSes
