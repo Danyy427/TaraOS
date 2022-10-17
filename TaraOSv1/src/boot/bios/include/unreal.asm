@@ -1,10 +1,4 @@
 start:   
-    xor ax, ax       ; make it zero
-    mov ds, ax             ; DS=0
-    mov ss, ax             ; stack starts at seg 0
-    mov sp, 0x9c00         ; 2000h past code start, 
-                            ; making the stack 7.5k in size
-    
     cli                    ; no interrupts
     push ds                ; save real mode
     
@@ -25,11 +19,7 @@ start:
     pop ds                 ; get back old segment
     sti
     
-    mov bx, 0x0f01         ; attrib/char of smiley
-    mov eax, 0x0b8000      ; note 32 bit offset
-    mov word [ds:eax], bx
-    
-    jmp $                  ; loop forever
+    ret
  
 gdtinfo:
     dw gdt_end - gdt - 1   ;last byte in table
